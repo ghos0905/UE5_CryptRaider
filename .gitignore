@@ -1,0 +1,26 @@
+# 기본적으로 무시할 항목들
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.sdf
+*.opensdf
+*.user
+*.userprefs
+
+# Visual Studio 관련 파일
+.vscode/
+.vs/
+*.code-workspace
+
+# 빌드 관련 파일
+*.log
+*.tmp
+
+# 특정 IDE 파일
+.idea/
+*.suo
+*.user
+
+# 대용량 파일
+Content/
