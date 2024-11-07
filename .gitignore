@@ -24,3 +24,6 @@ Saved/
 
 # 대용량 파일
 Content/
+
+# MAC OS 관련 파일
+.DS_Store
