@@ -21,8 +21,6 @@ UTriggerComponent::UTriggerComponent()
 void UTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-    UE_LOG(LogTemp, Display, TEXT("Trigger Component Alive"));
 	
 }
 
@@ -31,12 +29,49 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+    AActor* Actor = GetAcceptableActor();
+
+    if(Actor != nullptr)
+    {
+        UPrimitiveComponent* Component = Cast<UPrimitiveComponent>(Actor->GetRootComponent());
+        if (Component != nullptr)
+        {
+            Component->SetSimulatePhysics(false);
+        }
+        Actor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+
+        Mover->SetShouldMove(true);
+        UE_LOG(LogTemp, Display, TEXT("Unlocking!"));
+    }
+    else
+    {
+        Mover->SetShouldMove(false);
+        UE_LOG(LogTemp, Display, TEXT("Relocking!"));
+    }
+}
+
+void UTriggerComponent::SetMover(UMover* NewMover)
+{
+    Mover = NewMover;
+}
+
+AActor* UTriggerComponent::GetAcceptableActor() const
+{
+
     TArray<AActor*> Actors;
     GetOverlappingActors(Actors);
 
 
     for(AActor* Actor: Actors)
     {
-        UE_LOG(LogTemp, Display, TEXT("Actor: %s"), *Actor->GetActorNameOrLabel());
+        if(Actor->ActorHasTag(AcceptableActorTag) && !(Actor->ActorHasTag("Grabbed")))
+        {
+            
+            return Actor;
+        }
+        
     }
+
+    return nullptr;
 }
+
